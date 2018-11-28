@@ -1,4 +1,4 @@
-# powershell_meterpreter_extractor
+# Navigator Generator (NavGen)
 
 ## Synopsis
 
