@@ -20,7 +20,6 @@ def get_auth():
         else:
             break
 
-
     return api_key, full_url
 
 
@@ -67,6 +66,7 @@ def download_reports(api_key, url):
 
         # append 100 batch threat report to data object
         data += r.json()['results']
+    
     return data
 
 
@@ -88,6 +88,7 @@ def hardcoded_tids(tid, comment):
     if get_tactic(tid.lower()) is not None:
         for tactic in get_tactic(tid.lower()):
             my_new_dict = (create_dict(tid, 100, comment, tactic))
+    
     return my_new_dict
 
 
@@ -105,6 +106,7 @@ def create_dict(tid, score, comment, tactic):
         "comment": comment,
         "enabled": True
     }
+    
     return nav_techniques
 
 
@@ -359,7 +361,9 @@ def generate_tid_dict(threat_reports):
                         # print("doesn't exist")
                         tid_dict[tag] = [threat_report]
                         # tid_dict[tag].append(threat_report)
+    
     return tid_dict
+
 
 def build_navigator():
     navigator = {
@@ -392,6 +396,7 @@ def build_navigator():
         "tacticRowBackground": "#dddddd",
         "selectTechniquesAcrossTactics": True
     }
+    
     return navigator
 
 
@@ -408,6 +413,7 @@ def prepare_nav_techniques(tid, threat_report_values):
         "comment": comment,
         "enabled": True
     }
+    
     return nav_technique
 
 
@@ -416,6 +422,7 @@ def get_comment(threat_report_values):
     comment = "There are %s queries matching this TID.\n\n" % (int(number_of_reports))
     for threat_report in threat_report_values:
         comment += "Feed: %s\nTitle: %s\nID: %s\nDescription: %s\n\n" % (threat_report['feed_name'], threat_report['title'], threat_report['id'], threat_report['description'].split("\n")[0])
+    
     return comment
 
 
