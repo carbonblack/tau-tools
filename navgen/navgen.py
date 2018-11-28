@@ -333,7 +333,8 @@ def get_tactic(tid):
         "t1084": ["persistence"],
         "t1028": ["execution", "lateral-movement"],
         "t1004": ["persistence"],
-        "t1222": ["defense-evasion"]
+        "t1222": ["defense-evasion"],
+        "t1220": ["defense-evasion", "execution"]
     }
 
     tactics = attack_dict.get(tid, None)
