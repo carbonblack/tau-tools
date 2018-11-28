@@ -108,26 +108,6 @@ def create_dict(tid, score, comment, tactic):
     return nav_techniques
 
 
-# def get_color_hardcode(score):
-#     """ This function checks the score of a threat report:
-#             if score is 80 or greater, use darkest shade of green.
-#             if score is between 50 and 79, use medium shade of green.
-#             if score is between 0 and 49, use light share of green.
-#         This is far from a perfect way of doing this... will need to reconsider
-#         in future."""
-#     color_dict = {
-#         'green-high': '#00ff61',
-#         'green-med': '#83fcb1',
-#         'green-low': '#d6ffe5'
-#     }
-#     if score >= 80:
-#         return color_dict['green-high']
-#     elif score >= 50:
-#         return color_dict['green-med']
-#     elif score >= 0:
-#         return color_dict['green-low']
-
-
 def get_tactic(tid):
     # we should generate this dict by scraping https://attack.mitre.org/wiki/All_Techniques
     """ this will accept a tid, and return a list of tactics"""
