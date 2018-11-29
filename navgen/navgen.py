@@ -12,6 +12,7 @@ def get_auth():
     full_url = input("[!] Here, enter the full url of your Cb Response instance. Example: https://bugcrowd.my.carbonblack.io\n[*] > ")
     if "https://" not in full_url:
         full_url = "https://" + full_url
+
     while True:
         api_key = input("[*] Enter your API key: > ")
         if len(api_key) != 40:
@@ -46,6 +47,8 @@ def download_reports(api_key, url):
         r = requests.get(full_url, headers=headers)
     except:
         r = requests.get(full_url, headers=headers, verify=False)
+
+    # store results as json
     data = r.json()
 
     # gets the number of total threat reports found.
@@ -66,7 +69,7 @@ def download_reports(api_key, url):
 
         # append 100 batch threat report to data object
         data += r.json()['results']
-    
+
     return data
 
 
@@ -88,7 +91,7 @@ def hardcoded_tids(tid, comment):
     if get_tactic(tid.lower()) is not None:
         for tactic in get_tactic(tid.lower()):
             my_new_dict = (create_dict(tid, 100, comment, tactic))
-    
+
     return my_new_dict
 
 
@@ -106,7 +109,7 @@ def create_dict(tid, score, comment, tactic):
         "comment": comment,
         "enabled": True
     }
-    
+
     return nav_techniques
 
 
@@ -362,7 +365,7 @@ def generate_tid_dict(threat_reports):
                         # print("doesn't exist")
                         tid_dict[tag] = [threat_report]
                         # tid_dict[tag].append(threat_report)
-    
+
     return tid_dict
 
 
@@ -397,7 +400,7 @@ def build_navigator():
         "tacticRowBackground": "#dddddd",
         "selectTechniquesAcrossTactics": True
     }
-    
+
     return navigator
 
 
@@ -414,7 +417,7 @@ def prepare_nav_techniques(tid, threat_report_values):
         "comment": comment,
         "enabled": True
     }
-    
+
     return nav_technique
 
 
@@ -423,7 +426,7 @@ def get_comment(threat_report_values):
     comment = "There are %s queries matching this TID.\n\n" % (int(number_of_reports))
     for threat_report in threat_report_values:
         comment += "Feed: %s\nTitle: %s\nID: %s\nDescription: %s\n\n" % (threat_report['feed_name'], threat_report['title'], threat_report['id'], threat_report['description'].split("\n")[0])
-    
+
     return comment
 
 
@@ -434,21 +437,20 @@ def get_color(threat_report_value):
         'green-low': '#d6ffe5'
     }
 
+    # this if statement supports hardcoded tids via hardcoded_tids()
     if type(threat_report_value) == int:
-        if threat_report_value >= 80:
+        score = threat_report_value
+        threat_report_value = []
+        threat_report_value.append({'score': score})
+
+    for threat_report in threat_report_value:
+        print(threat_report['score'])
+        if threat_report['score'] >= 80:
             return color_dict['green-high']
-        elif threat_report_value >= 50:
+        elif threat_report['score'] >= 50:
             return color_dict['green-med']
-        elif threat_report_value >= 0:
+        elif threat_report['score'] >= 0:
             return color_dict['green-low']
-    else:
-        for threat_report in threat_report_value:
-            if threat_report['score'] >= 80:
-                return color_dict['green-high']
-            elif threat_report['score'] >= 50:
-                return color_dict['green-med']
-            elif threat_report['score'] >= 0:
-                return color_dict['green-low']
 
 def main():
     api_key, url = get_auth()
