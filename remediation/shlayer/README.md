@@ -1,8 +1,8 @@
 # OSX Shlayer Cleanup Script
 
-#### Blog: [TBD]()
+### Blog: [New MacOS Malware Variant of Shlayer Discovered](https://www.carbonblack.com/2019/02/12/tau-threat-intelligence-notification-new-macos-malware-variant-of-shlayer-osx-discovered/)
 
-#### Instructions
+### Instructions
 
 There are two ways to run this script. Interactively and Automatically.
 
@@ -10,13 +10,13 @@ First things first, ensure the script is executable:
 
     $ chmod +x ./shlayer-cleanup.sh
 
-##### Interactive Execution
+#### Interactive Execution
 
 Allows you to step through the execution and review all files before making a decision on removing them.
 
     $ ./shlayer-cleanup.sh
 
-##### Automatic Execution
+#### Automatic Execution
 
 Runs the script and automatically deletes any detected Shlayer malicious files.
 
@@ -28,6 +28,6 @@ To download and execute this script directly from this repository you can run th
 
 To execute this script using Carbon Black's Live Response, add 'execfg' to the beginning of the string.
 
-##### Example
+#### Example
 
 ![image](https://user-images.githubusercontent.com/727732/52649660-ecde8b80-2ea5-11e9-81f8-0f9dce1d187d.png)

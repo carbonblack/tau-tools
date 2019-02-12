@@ -61,4 +61,3 @@ for directory in ${directories[@]}; do
 		echo ""
 	fi
 done
-
