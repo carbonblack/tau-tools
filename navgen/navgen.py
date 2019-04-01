@@ -87,12 +87,12 @@ def reports_stats(data):
 
 def hardcoded_tids(tid, comment):
     """ Some threat reports aren't tagged with a TID. """
-    my_new_list = {}
+    my_new_list =[] 
     if get_tactic(tid.lower()) is not None:
         for tactic in get_tactic(tid.lower()):
-            my_new_dict = (create_dict(tid, 100, comment, tactic))
+            my_new_list.append(create_dict(tid, 100, comment, tactic))
 
-    return my_new_dict
+    return my_new_list
 
 
 def create_dict(tid, score, comment, tactic):
@@ -350,8 +350,9 @@ def generate_tid_dict(threat_reports):
     pattern = "t\d{4}"
 
     for threat_report in threat_reports:
-        # print(threat_report['tags'])
-        if "windows" in threat_report['tags']:
+        #print(threat_report['tags'])
+        # grab all the supported OS tags
+        if "windows" in threat_report['tags'] or "linux" in threat_report['tags'] or "macos" in threat_report['tags']:
             for tag in threat_report['tags']:
                 if re.match(pattern, tag):
                     # print("match")
@@ -371,8 +372,8 @@ def generate_tid_dict(threat_reports):
 
 def build_navigator():
     navigator = {
-        "name": "Cb Response - Windows",
-        "version": "2.0",
+        "name": "Cb Response Coverage (Windows,Linux,macOS)",
+        "version": "2.1",
         "domain": "mitre-enterprise",
         "description": "",
         "filters": {
@@ -380,7 +381,9 @@ def build_navigator():
                 "act"
             ],
             "platforms": [
-                "windows"
+                "windows",
+                "mac",
+                "linux"
             ]
         },
         "sorting": 0,
@@ -479,10 +482,11 @@ def main():
     navigator['techniques'] = nav_techniques_list
 
     # we'll hardcode some TID's that target a fundamental feature.
-    navigator['techniques'].append(hardcoded_tids("t1129", "Native product functionality."))
-    navigator['techniques'].append(hardcoded_tids("t1116", "Native product functionality."))
-    navigator['techniques'].append(hardcoded_tids("t1065", "Native product functionality."))
-    navigator['techniques'].append(hardcoded_tids("t1043", "Native product functionality."))
+    # extending the existing list in case a hard coded tid has more than one tactic. This will unroll the list from hardcoded_tids()
+    navigator['techniques'].extend(hardcoded_tids("t1129", "Native product functionality."))
+    navigator['techniques'].extend(hardcoded_tids("t1116", "Native product functionality."))
+    navigator['techniques'].extend(hardcoded_tids("t1065", "Native product functionality."))
+    navigator['techniques'].extend(hardcoded_tids("t1043", "Native product functionality."))
 
     # builds the navigator json
     navigator_json = json.dumps(navigator, indent=4, sort_keys=True)
