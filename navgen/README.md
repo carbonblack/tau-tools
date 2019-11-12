@@ -26,6 +26,7 @@ Version 1.0 - Initial release
 ## Author
  
 Adam Nadrowski ([@\_sup\_mane](https://twitter.com/_sup_mane))
+Jimmy Astle
 
 ## License
 
