@@ -117,6 +117,12 @@ def get_tactic(tid):
     # we should generate this dict by scraping https://attack.mitre.org/wiki/All_Techniques
     """ this will accept a tid, and return a list of tactics"""
     attack_dict = {
+        "t1490": ["impact"],
+        "t1488": ["impact"],
+        "t1501": ["persistence"],
+        "t1382": ["launch"],
+        "t1485": ["impact"],
+        "t1500": ["defense-evasion"],
         "t1156": ["persistence"],
         "t1134": ["defense-evasion", "privilege-escalation"],
         "t1015": ["persistence", "privilege-escalation"],
@@ -373,7 +379,7 @@ def generate_tid_dict(threat_reports):
 def build_navigator():
     navigator = {
         "name": "Cb Response Coverage (Windows,Linux,macOS)",
-        "version": "2.1",
+        "version": "2.2",
         "domain": "mitre-enterprise",
         "description": "",
         "filters": {
