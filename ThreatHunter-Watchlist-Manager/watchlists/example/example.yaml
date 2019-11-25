@@ -1,0 +1,28 @@
+---
+author: TAU
+detection: 'Potential AMSI DLL Search Order Hijacking'
+industry: 'all'
+link: 'https://attack.mitre.org/techniques/T1038/'
+notes: ''
+tags:
+- evasion
+- persistence
+- privesc
+- t1038
+- t1089
+- amsi
+type: Carbon Black First Party
+description: "An attacker can bypass AMSI and/or previously patched AMSI vulnerabilities by dropping their own DLL and invoking an AMSI eligible process.
+              This query looks for amsi.dll being loaded from a non-standard windows path which is a high confidence indicator that AMSI dll search 
+              order hijacking is taking place."
+false positives: 'One endpoint security vendor is using the same name of their amsi dll as the built in system library name. This goes against development best practices.'
+queries:
+  attack test(s): https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1038/T1038.yaml
+  comment: 
+  guid: 36b837da-6f8c-4345-aac6-ef08b753fdf9 
+  query: (modload_name:amsi.dll AND NOT (modload_name:windows\\syswow64\\amsi.dll OR modload_name:windows\\system32\\amsi.dll OR modload_name:windows\\winsxs\\*\\amsi.dll)) -legacy:true
+  title: AMSI - Potential AMSI DLL Search Order Hijacking
+supported platform(s): windows
+threat: '9'
+query id: amsi_dll_search_order_hijacking_ioc
+...
