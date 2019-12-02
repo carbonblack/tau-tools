@@ -1,4 +1,4 @@
-## Threatunter Watchlist Manager
+## ThreatHunter Watchlist Manager
 
         Manage custom watchlists across multiple environments
 
