@@ -1,8 +1,8 @@
-## Threat Hunter Watchlist Manager
+## Threatunter Watchlist Manager
 
         Manage custom watchlists across multiple environments
 
-        Convert Threat Hunter Queries
+        Convert ThreatHunter Queries
 
         Delete Watchlists and Feeds
 
@@ -33,7 +33,7 @@ Install python3 requirements:
 
         pip3 install -r requirements.txt
 
-Parse Threat Hunter YAMLs and Create / Update Watchlists:
+Parse ThreatHunter YAMLs and Create / Update Watchlists:
 
         watchlist-manager.py [-h] [-o ORGKEY] [-p ORGPROFILE] [-w WATCHLIST_NAME] [-c CBR_QUERY] [-d DELETE_QUERY]
 
@@ -44,7 +44,7 @@ Parse Threat Hunter YAMLs and Create / Update Watchlists:
         -w WATCHLIST_NAME, --watchlist WATCHLIST_NAME
                                 Watchlist to create. Options: [customizable...]
         -c CBR_QUERY, --convert CBR_QUERY
-                                Convert CB Response query to Threat Hunter format. Eg: (-c <query>)
+                                Convert CB Response query to ThreatHunter format. Eg: (-c <query>)
         -d DELETE_QUERY, --delete DELETE_QUERY
                                 Delete a watchlist via query. Eg: (-d <query>)
 

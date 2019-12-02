@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# Threat Hunter Watchlist Creator
+# ThreatHunter Watchlist Creator
 # Copyright VMware 2019
 # November 2019
 # Version 0.1
@@ -8,7 +8,7 @@
 #
 #    usage: watchlist-manager.py [-h] [-o ORGKEY] [-p ORGPROFILE] [-w WATCHLIST_NAME] [-c CBR_QUERY] [-d DELETE_QUERY]
 #
-#    Parse Threat Hunter YAMLs and Create / Update Watchlists
+#    Parse ThreatHunter YAMLs and Create / Update Watchlists
 #
 #    optional arguments:
 #    -h, --help            show this help message and exit
@@ -17,7 +17,7 @@
 #    -w WATCHLIST_NAME, --watchlist WATCHLIST_NAME
 #                            Watchlist to create. Options: [customizable]
 #    -c CBR_QUERY, --convert CBR_QUERY
-#                            Convert CB Response query to Threat Hunter format. Eg: (-c <query>)
+#                            Convert CB Response query to ThreatHunter format. Eg: (-c <query>)
 #    -d DELETE_QUERY, --delete DELETE_QUERY
 #                            Delete a watchlist via query. Eg: (-d <query>)
 
@@ -207,10 +207,10 @@ def nuke(args,parser,feed_name):
 
 
 def main():
-    parser = argparse.ArgumentParser(description = 'Parse Threat Hunter YAMLs and Create / Update Watchlists')
+    parser = argparse.ArgumentParser(description = 'Parse ThreatHunter YAMLs and Create / Update Watchlists')
     parser.add_argument('-p', '--profile', help = 'Select your cbapi credential profile', dest = 'orgprofile')
     parser.add_argument('-w', '--watchlist', help = 'Watchlist to create. Options: [AMSI, AdvancedThreats]', dest = 'watchlist_name', default = 'AMSI')
-    parser.add_argument('-c', '--convert', help = 'Convert CB Response query to Threat Hunter format. Eg: (-c <query>)', dest = 'cbr_query')
+    parser.add_argument('-c', '--convert', help = 'Convert CB Response query to ThreatHunter format. Eg: (-c <query>)', dest = 'cbr_query')
     parser.add_argument('-d', '--delete', help = 'Delete a watchlist via query. Eg: (-d <query>)', dest = 'delete_query')
     args = parser.parse_args()
 
