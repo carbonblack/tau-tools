@@ -1,2 +1,36 @@
-# threat-research-tools
-Tools from the Cb Threat Research Team
+	                                          
+	 _____ _____ _____    _____         _     
+	|_   _|  _  |  |  |  |_   _|___ ___| |___ 
+	  | | |     |  |  |    | | | . | . | |_ -|
+	  |_| |__|__|_____|    |_| |___|___|_|___|
+	                                          
+
+## Various tools from the VMware Carbon Black Threat Analysis Unit
+
+#### VMware Carbon Black ThreatHunter
+  - [Watchlist-Manager](https://github.com/carbonblack/tau-tools/tree/master/ThreatHunter-Watchlist-Manager)
+
+#### VMware Carbon Black Response
+  - [CB-Command_R](https://github.com/carbonblack/tau-tools/tree/master/threat_hunting/CB-Command_R)
+
+#### MITRE ATT&CK
+  - [navgen](https://github.com/carbonblack/tau-tools/tree/master/navgen)
+  - [Invoke-APT29](https://github.com/carbonblack/tau-tools/tree/master/threat-emulation/Invoke-APT29)
+
+#### Threat Hunting
+  - [Meterpreter Extractor](https://github.com/carbonblack/tau-tools/tree/master/threat_hunting/powershell_meterpreter_extractor)
+  - [IOCs](https://github.com/carbonblack/tau-tools/tree/master/threat_hunting/IOCs)
+  - [YARA](https://github.com/carbonblack/tau-tools/tree/master/threat_hunting/yara)
+  - [PNG Extract](https://github.com/carbonblack/tau-tools/tree/master/threat_hunting/png_extract)
+
+#### Threat Emulation
+  - [Pseudo Ransomware](https://github.com/carbonblack/tau-tools/tree/master/threat-emulation/)
+
+#### Malware Specific
+  - [FancyBear](https://github.com/carbonblack/tau-tools/tree/master/malware_specific/FancyBear)
+  - [Sodinokibi](https://github.com/carbonblack/tau-tools/tree/master/malware_specific/Sodinokibi)
+
+#### Remediation
+  - [Shlayer](https://github.com/carbonblack/tau-tools/tree/master/remediation/shlayer)
+
+Last updated: January 9, 2020
