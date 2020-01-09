@@ -14,7 +14,7 @@
   - [CB-Command_R](https://github.com/carbonblack/tau-tools/tree/master/threat_hunting/CB-Command_R)
 
 #### MITRE ATT&CK
-  - [navgen](https://github.com/carbonblack/tau-tools/tree/master/navgen)
+  - [Navgen](https://github.com/carbonblack/tau-tools/tree/master/navgen)
   - [Invoke-APT29](https://github.com/carbonblack/tau-tools/tree/master/threat_emulation/Invoke-APT29)
 
 #### Threat Hunting
