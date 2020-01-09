@@ -15,7 +15,7 @@
 
 #### MITRE ATT&CK
   - [navgen](https://github.com/carbonblack/tau-tools/tree/master/navgen)
-  - [Invoke-APT29](https://github.com/carbonblack/tau-tools/tree/master/threat-emulation/Invoke-APT29)
+  - [Invoke-APT29](https://github.com/carbonblack/tau-tools/tree/master/threat_emulation/Invoke-APT29)
 
 #### Threat Hunting
   - [Meterpreter Extractor](https://github.com/carbonblack/tau-tools/tree/master/threat_hunting/powershell_meterpreter_extractor)
@@ -24,7 +24,7 @@
   - [PNG Extract](https://github.com/carbonblack/tau-tools/tree/master/threat_hunting/png_extract)
 
 #### Threat Emulation
-  - [Pseudo Ransomware](https://github.com/carbonblack/tau-tools/tree/master/threat-emulation/)
+  - [Pseudo Ransomware](https://github.com/carbonblack/tau-tools/tree/master/threat_emulation/pseudo_ransomware)
 
 #### Malware Specific
   - [FancyBear](https://github.com/carbonblack/tau-tools/tree/master/malware_specific/FancyBear)
