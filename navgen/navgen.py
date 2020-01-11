@@ -356,22 +356,14 @@ def generate_tid_dict(threat_reports):
     pattern = "t\d{4}"
 
     for threat_report in threat_reports:
-        #print(threat_report['tags'])
         # grab all the supported OS tags
         if "windows" in threat_report['tags'] or "linux" in threat_report['tags'] or "macos" in threat_report['tags']:
             for tag in threat_report['tags']:
                 if re.match(pattern, tag):
-                    # print("match")
-                    # if tid, this means it's attack query. Check to see if there's tid key already in dict...
                     if tag in tid_dict:
-                        # if it exists, add as list.
-                        # print("exists... adding")
                         tid_dict[tag].append(threat_report)
                     else:
-                        # if key doesn't exist, create it
-                        # print("doesn't exist")
                         tid_dict[tag] = [threat_report]
-                        # tid_dict[tag].append(threat_report)
 
     return tid_dict
 
@@ -453,7 +445,6 @@ def get_color(threat_report_value):
         threat_report_value.append({'score': score})
 
     for threat_report in threat_report_value:
-        print(threat_report['score'])
         if threat_report['score'] >= 80:
             return color_dict['green-high']
         elif threat_report['score'] >= 50:
@@ -479,10 +470,15 @@ def main():
         nav_techniques = prepare_nav_techniques(tid, threat_report_values)
 
         # Since prepare_nav_techniques returns list with multiple tactics, we should iterate through them to create 1:1 relationships. This for loop fixes that.
-        for tactic in nav_techniques['tactic']:
-            nav_techniques_copy = dict(nav_techniques)
-            nav_techniques_copy['tactic'] = tactic
-            nav_techniques_list.append(nav_techniques_copy)
+        try:
+            for tactic in nav_techniques['tactic']:
+
+                nav_techniques_copy = dict(nav_techniques)
+                nav_techniques_copy['tactic'] = tactic
+                nav_techniques_list.append(nav_techniques_copy)
+        except:
+                print("\n[!] WARNING: Did not find tactic for: ")
+                print(nav_techniques)
 
     navigator = build_navigator()
     navigator['techniques'] = nav_techniques_list
