@@ -2,8 +2,10 @@ import requests
 import json
 import re
 import time
-import pprint
 
+# we need to download the json of the mitre attack matrix
+resp = requests.get("https://raw.githubusercontent.com/mitre/cti/master/enterprise-attack/enterprise-attack.json")
+data = resp.json()
 
 def get_auth():
     """this will ask for auth info to CbR instance and return it"""
@@ -88,8 +90,8 @@ def reports_stats(data):
 def hardcoded_tids(tid, comment):
     """ Some threat reports aren't tagged with a TID. """
     my_new_list =[] 
-    if get_tactic(tid.lower()) is not None:
-        for tactic in get_tactic(tid.lower()):
+    if get_tactic(data, tid.lower()) is not None:
+        for tactic in get_tactic(data, tid.lower()):
             my_new_list.append(create_dict(tid, 100, comment, tactic))
 
     return my_new_list
@@ -113,241 +115,22 @@ def create_dict(tid, score, comment, tactic):
     return nav_techniques
 
 
-def get_tactic(tid):
-    # we should generate this dict by scraping https://attack.mitre.org/wiki/All_Techniques
-    """ this will accept a tid, and return a list of tactics"""
-    attack_dict = {
-        "t1490": ["impact"],
-        "t1488": ["impact"],
-        "t1501": ["persistence"],
-        "t1382": ["launch"],
-        "t1485": ["impact"],
-        "t1500": ["defense-evasion"],
-        "t1156": ["persistence"],
-        "t1134": ["defense-evasion", "privilege-escalation"],
-        "t1015": ["persistence", "privilege-escalation"],
-        "t1087": ["discovery"],
-        "t1098": ["credential-access"],
-        "t1182": ["persistence", "privilege-escalation"],
-        "t1103": ["persistence", "privilege-escalation"],
-        "t1155": ["execution", "lateral-movement"],
-        "t1017": ["lateral-movement"],
-        "t1138": ["persistence", "privilege-escalation"],
-        "t1010": ["discovery"],
-        "t1123": ["collection"],
-        "t1131": ["persistence"],
-        "t1119": ["collection"],
-        "t1020": ["exfiltration"],
-        "t1197": ["defense-evasion", "persistence"],
-        "t1139": ["credential-access"],
-        "t1009": ["defense-evasion"],
-        "t1067": ["persistence"],
-        "t1217": ["discovery"],
-        "t1176": ["persistence"],
-        "t1110": ["credential-access"],
-        "t1088": ["defense-evasion", "privilege-escalation"],
-        "t1191": ["defense-evasion", "execution"],
-        "t1042": ["persistence"],
-        "t1146": ["defense-evasion"],
-        "t1115": ["collection"],
-        "t1116": ["defense-evasion"],
-        "t1059": ["execution"],
-        "t1043": ["command-and-control"],
-        "t1092": ["command-and-control"],
-        "t1109": ["defense-evasion", "persistence"],
-        "t1122": ["defense-evasion", "persistence"],
-        "t1090": ["command-and-control"],
-        "t1196": ["defense-evasion", "execution"],
-        "t1136": ["persistence"],
-        "t1003": ["credential-access"],
-        "t1081": ["credential-access"],
-        "t1214": ["credential-access"],
-        "t1094": ["command-and-control"],
-        "t1024": ["command-and-control"],
-        "t1207": ["defense-evasion"],
-        "t1038": ["defense-evasion", "persistence", "privilege-escalation"],
-        "t1073": ["defense-evasion"],
-        "t1002": ["exfiltration"],
-        "t1132": ["command-and-control"],
-        "t1022": ["exfiltration"],
-        "t1001": ["command-and-control"],
-        "t1074": ["collection"],
-        "t1030": ["exfiltration"],
-        "t1213": ["collection"],
-        "t1005": ["collection"],
-        "t1039": ["collection"],
-        "t1025": ["collection"],
-        "t1140": ["defense-evasion"],
-        "t1089": ["defense-evasion"],
-        "t1175": ["lateral-movement"],
-        "t1172": ["command-and-control"],
-        "t1189": ["initial-access"],
-        "t1157": ["persistence", "privilege-escalation"],
-        "t1173": ["execution"],
-        "t1114": ["collection"],
-        "t1106": ["execution"],
-        "t1129": ["execution"],
-        "t1048": ["exfiltration"],
-        "t1041": ["exfiltration"],
-        "t1011": ["exfiltration"],
-        "t1052": ["exfiltration"],
-        "t1190": ["initial-access"],
-        "t1203": ["execution"],
-        "t1212": ["credential-access"],
-        "t1211": ["defense-evasion"],
-        "t1068": ["privilege-escalation"],
-        "t1210": ["lateral-movement"],
-        "t1133": ["persistence"],
-        "t1181": ["defense-evasion", "privilege-escalation"],
-        "t1008": ["command-and-control"],
-        "t1107": ["defense-evasion"],
-        "t1006": ["defense-evasion"],
-        "t1044": ["persistence", "privilege-escalation"],
-        "t1083": ["discovery"],
-        "t1187": ["credential-access"],
-        "t1144": ["defense-evasion"],
-        "t1061": ["execution"],
-        "t1148": ["defense-evasion"],
-        "t1200": ["initial-access"],
-        "t1158": ["defense-evasion", "persistence"],
-        "t1147": ["defense-evasion"],
-        "t1143": ["defense-evasion"],
-        "t1179": ["credential-access", "persistence", "privilege-escalation"],
-        "t1062": ["persistence"],
-        "t1183": ["defense-evasion", "persistence", "privilege-escalation"],
-        "t1054": ["defense-evasion"],
-        "t1066": ["defense-evasion"],
-        "t1070": ["defense-evasion"],
-        "t1202": ["defense-evasion"],
-        "t1056": ["collection", "credential-access"],
-        "t1141": ["credential-access"],
-        "t1130": ["defense-evasion"],
-        "t1118": ["defense-evasion", "execution"],
-        "t1208": ["credential-access"],
-        "t1215": ["persistence"],
-        "t1142": ["credential-access"],
-        "t1161": ["persistence"],
-        "t1149": ["defense-evasion"],
-        "t1171": ["credential-access"],
-        "t1177": ["execution", "persistence"],
-        "t1159": ["persistence"],
-        "t1160": ["persistence", "privilege-escalation"],
-        "t1152": ["defense-evasion", "execution", "persistence"],
-        "t1168": ["persistence", "execution"],
-        "t1162": ["persistence"],
-        "t1037": ["lateral-movement", "persistence"],
-        "t1185": ["collection"],
-        "t1036": ["defense-evasion"],
-        "t1031": ["persistence"],
-        "t1112": ["defense-evasion"],
-        "t1170": ["defense-evasion", "execution"],
-        "t1104": ["command-and-control"],
-        "t1188": ["command-and-control"],
-        "t1026": ["command-and-control"],
-        "t1079": ["command-and-control"],
-        "t1096": ["defense-evasion"],
-        "t1128": ["persistence"],
-        "t1046": ["discovery"],
-        "t1126": ["defense-evasion"],
-        "t1135": ["discovery"],
-        "t1040": ["credential-access", "discovery"],
-        "t1050": ["persistence", "privilege-escalation"],
-        "t1027": ["defense-evasion"],
-        "t1137": ["persistence"],
-        "t1075": ["lateral-movement"],
-        "t1097": ["lateral-movement"],
-        "t1174": ["credential-access"],
-        "t1201": ["discovery"],
-        "t1034": ["persistence", "privilege-escalation"],
-        "t1120": ["discovery"],
-        "t1069": ["discovery"],
-        "t1150": ["defense-evasion", "persistence", "privilege-escalation"],
-        "t1205": ["command-and-control", "defense-evasion", "persistence"],
-        "t1013": ["persistence", "privilege-escalation"],
-        "t1086": ["execution"],
-        "t1145": ["credential-access"],
-        "t1057": ["discovery"],
-        "t1186": ["defense-evasion"],
-        "t1093": ["defense-evasion"],
-        "t1055": ["defense-evasion", "privilege-escalation"],
-        "t1012": ["discovery"],
-        "t1163": ["persistence"],
-        "t1164": ["persistence"],
-        "t1108": ["defense-evasion", "persistence"],
-        "t1060": ["persistence"],
-        "t1121": ["defense-evasion", "execution"],
-        "t1117": ["defense-evasion", "execution"],
-        "t1219": ["command-and-control"],
-        "t1076": ["lateral-movement"],
-        "t1105": ["command-and-control", "lateral-movement"],
-        "t1021": ["lateral-movement"],
-        "t1018": ["discovery"],
-        "t1091": ["lateral-movement", "initial-access"],
-        "t1014": ["defense-evasion"],
-        "t1085": ["defense-evasion", "execution"],
-        "t1178": ["privilege-escalation"],
-        "t1198": ["defense-evasion", "persistence"],
-        "t1184": ["lateral-movement"],
-        "t1053": ["execution", "persistence", "privilege-escalation"],
-        "t1029": ["exfiltration"],
-        "t1113": ["collection"],
-        "t1180": ["persistence"],
-        "t1064": ["defense-evasion", "execution"],
-        "t1063": ["discovery"],
-        "t1101": ["persistence"],
-        "t1167": ["credential-access"],
-        "t1035": ["execution"],
-        "t1058": ["persistence", "privilege-escalation"],
-        "t1166": ["privilege-escalation"],
-        "t1051": ["lateral-movement"],
-        "t1023": ["persistence"],
-        "t1218": ["defense-evasion", "execution"],
-        "t1216": ["defense-evasion", "execution"],
-        "t1045": ["defense-evasion"],
-        "t1153": ["execution"],
-        "t1151": ["defense-evasion", "execution"],
-        "t1193": ["initial-access"],
-        "t1192": ["initial-access"],
-        "t1194": ["initial-access"],
-        "t1071": ["command-and-control"],
-        "t1032": ["command-and-control"],
-        "t1095": ["command-and-control"],
-        "t1165": ["persistence", "privilege-escalation"],
-        "t1169": ["privilege-escalation"],
-        "t1206": ["privilege-escalation"],
-        "t1195": ["initial-access"],
-        "t1019": ["persistence"],
-        "t1082": ["discovery"],
-        "t1016": ["discovery"],
-        "t1049": ["discovery"],
-        "t1033": ["discovery"],
-        "t1007": ["discovery"],
-        "t1124": ["discovery"],
-        "t1080": ["lateral-movement"],
-        "t1072": ["execution", "lateral-movement"],
-        "t1209": ["persistence"],
-        "t1099": ["defense-evasion"],
-        "t1154": ["execution", "persistence"],
-        "t1127": ["defense-evasion", "execution"],
-        "t1199": ["initial-access"],
-        "t1111": ["credential-access"],
-        "t1065": ["command-and-control"],
-        "t1204": ["execution"],
-        "t1078": ["defense-evasion", "persistence", "privilege-escalation", "initial-access"],
-        "t1125": ["collection"],
-        "t1102": ["command-and-control", "defense-evasion"],
-        "t1100": ["persistence", "privilege-escalation"],
-        "t1077": ["lateral-movement"],
-        "t1047": ["execution"],
-        "t1084": ["persistence"],
-        "t1028": ["execution", "lateral-movement"],
-        "t1004": ["persistence"],
-        "t1222": ["defense-evasion"],
-        "t1220": ["defense-evasion", "execution"]
-    }
-
-    tactics = attack_dict.get(tid, None)
-    return tactics
+def get_tactic(data, tid):
+    """ this should return a list of tactics like ['persistence'] """    
+    objects = data['objects']
+    for object in objects:
+        # print(object)
+        if object['type'] == "attack-pattern":
+            tid2 = object['external_references'][0]['external_id'].lower()
+            if tid == tid2:
+                tactic_list = []
+                for kill_chain_phase in object['kill_chain_phases']:
+                    tactic = kill_chain_phase['phase_name']
+                    tactic_list.append(tactic)
+    try:
+        return tactic_list
+    except:
+        pass
 
 
 def generate_tid_dict(threat_reports):
@@ -408,7 +191,7 @@ def build_navigator():
 def prepare_nav_techniques(tid, threat_report_values):
     """should accept one tid from build_navigator()... will contain list of mutiple queries."""
 
-    tactic = get_tactic(tid)
+    tactic = get_tactic(data, tid)
     color = get_color(threat_report_values)
     comment = get_comment(threat_report_values)
     nav_technique = {
@@ -451,6 +234,7 @@ def get_color(threat_report_value):
             return color_dict['green-med']
         elif threat_report['score'] >= 0:
             return color_dict['green-low']
+
 
 def main():
     api_key, url = get_auth()
