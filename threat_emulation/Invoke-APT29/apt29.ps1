@@ -12,7 +12,7 @@ function Invoke-APT29 {
     
     .EXAMPLE
         Import the module
-        PS C:\> Import-Module .\Invoke-APT29.ps1
+        PS C:\> Import-Module .\apt29.ps1
         
         Show the help menu:
         PS C:\> Invoke-APT29 -help
@@ -1800,8 +1800,8 @@ Attack Source:
 
     if ( $attack ) {
     
-        Write-Host "Createing and executing base64-encoded PowerShell code."
-        $OriginalCommand = 'Hello from APT29'
+        Write-Host "Creating and executing base64-encoded PowerShell code."
+        $OriginalCommand = 'Write-Host "Hello from APT29"'
         $Bytes = [System.Text.Encoding]::Unicode.GetBytes($OriginalCommand)
         $EncodedCommand =[Convert]::ToBase64String($Bytes)
         $EncodedCommand

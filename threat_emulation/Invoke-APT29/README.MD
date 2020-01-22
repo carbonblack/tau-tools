@@ -36,7 +36,7 @@ Invoke-APT29 is an amalgamation of attack simulations specific to Cozy Bear that
 #### Usage
 
     Import the module
-    PS C:\> Import-Module .\Invoke-APT29.ps1
+    PS C:\> Import-Module .\apt29.ps1
 
     Show the help menu:
     PS C:\> Invoke-APT29 -help
