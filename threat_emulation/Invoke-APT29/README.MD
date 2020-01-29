@@ -72,7 +72,7 @@ Invoke-APT29 is an amalgamation of attack simulations specific to Cozy Bear that
 
 #### Thanks
 
-[MITRE ATT&CK](https://attack.mitre.org/) for the detailed analysis and information on (APT29)[https://attack.mitre.org/groups/G0016/]
+[MITRE ATT&CK](https://attack.mitre.org/) for the detailed analysis and information on [APT29](https://attack.mitre.org/groups/G0016/)
 
 [Red Canary](https://redcanary.com/) for the following [Atomic Red Team](https://atomicredteam.io/) tests leveraged in this framework:
 
