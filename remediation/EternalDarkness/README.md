@@ -4,9 +4,9 @@
 
 This detects and mitigates if systems are vulnerable to CVE-2020-0796 EternalDarkness
 
-This script will check OS version and if any shares are enabled.  Once its determined that the OS versions match and shares are enabled
-It will check HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameter\DisableCompression to determine if the host system is vulnerable
-if the host system is vulnerable and -mitigate is used it will set DisableCompression to 1
+This Module will check OS version and if any shares are enabled.  If OS version matches and shares are enabled 
+it will check HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameter\DisableCompression to determine if the host system is vulnerable.
+If the host system is vulnerable and -mitigate is used it will set DisableCompression to 1
 
 ## Instructions
 
