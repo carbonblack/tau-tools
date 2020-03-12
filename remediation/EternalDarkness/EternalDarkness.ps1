@@ -9,6 +9,7 @@
 
 .PARAMETER mitigate 
     The parameter mitigate is used to apply the recommenced mitigation's.
+    https://portal.msrc.microsoft.com/en-US/security-guidance/advisory/ADV200005
 
 .EXAMPLE
     The example below mitigates the system if vulnerable to CVE-2020-0796 EternalDarkness, Requires running as Admin
@@ -36,11 +37,10 @@ function EternalDarkness
 
     If ([environment]::OSVersion.Version.Major -eq 10) 
     {
-        If ([environment]::OSVersion.Version.Build -eq 1903 -or [environment]::OSVersion.Version.Build -eq 1909) 
+        If ([environment]::OSVersion.Version.Build -eq 18363 -or [environment]::OSVersion.Version.Build -eq 18362) 
         {
             If (Get-ItemProperty -Path HKLM:\System\CurrentControlSet\Services\LanmanServer\Shares) 
             {
-                Write-Host "OS Vulnerable with shares enabled"
                 If ((Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters").PSObject.Properties.Name -contains "DisableCompression") 
                 {
                     ##Here we'll check to see the value,
@@ -51,18 +51,27 @@ function EternalDarkness
                             If (([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator))
                             {
                                 Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters" DisableCompression -Type DWORD -Value 1 -Force
-                                Write-Host "System Patched"
+                                Write-Host -ForegroundColor Green "--------------------"
+                                Write-Host -ForegroundColor Green "--System Mitigated--"
+                                Write-Host -ForegroundColor Green "--------------------"
+                         
                             } Else
                             {
-                                Write-Host "Please Run as Admin"
+                                Write-Host -ForegroundColor Red "Run in elevated prompt"
                             }
                         } Else
                         {
-                            Write-Host "Device Vulnerable, to mitigate use the -mitigate argument"
+                            Write-Host -ForegroundColor Red "--------------"
+                            Write-Host -ForegroundColor Red "--Vulnerable--"
+                            Write-Host -ForegroundColor Red "--------------------------------"
+                            Write-Host -ForegroundColor Red "mitigate with -mitigate argument"
+                            Write-Host -ForegroundColor Red "--------------------------------"
                         }
                    } Else 
                    {
-                        Write-Host "Compression Disabled Device Not Vulnerable"
+                        Write-Host -ForegroundColor Green "------------------"
+                        Write-Host -ForegroundColor Green "--Not Vulnerable--"
+                        Write-Host -ForegroundColor Green "------------------"
                    }
 
                  } Else 
@@ -72,26 +81,38 @@ function EternalDarkness
                             If (([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator))
                             {
                                 Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters" DisableCompression -Type DWORD -Value 1 -Force
-                                Write-Host "System Mitigated"
+                                Write-Host -ForegroundColor Green "--------------------"
+                                Write-Host -ForegroundColor Green "--System Mitigated--"
+                                Write-Host -ForegrounFUCKdColor Green "--------------------"
                             } Else
                             {
-                                Write-Host "Please Run as Admin"
+                                Write-Host -ForegroundColor Red "Run in elevated prompt"
                             }
                       } Else
                       {
-                            Write-Host "Device Vulnerable, to mitigate use the -mitigate argument"
+                        Write-Host -ForegroundColor Red "--------------"
+                        Write-Host -ForegroundColor Red "--Vulnerable--"
+                        Write-Host -ForegroundColor Red "--------------------------------"
+                        Write-Host -ForegroundColor Red "mitigate with -mitigate argument"
+                        Write-Host -ForegroundColor Red "--------------------------------"
                       }
                  }
             } Else 
             {
-                Write-Host "No Shares enabled"
+                Write-Host -ForegroundColor Green "------------------"
+                Write-Host -ForegroundColor Green "--Not Vulnerable--"
+                Write-Host -ForegroundColor Green "------------------"
             }
         }Else 
         {
-            Write-Host "Build not Vulnerable"
+            Write-Host -ForegroundColor Green "------------------"
+            Write-Host -ForegroundColor Green "--Not Vulnerable--"
+            Write-Host -ForegroundColor Green "------------------"
         } 
     } Else {
-      Write-Host "OS Version no Vulnerable"
+        Write-Host -ForegroundColor Green "------------------"
+        Write-Host -ForegroundColor Green "--Not Vulnerable--"
+        Write-Host -ForegroundColor Green "------------------"
 
     } 
 
