@@ -47,16 +47,14 @@ def live_response(cb, host=None, response=None):
 
         if response == "patch":
             print ("[ * ] Patching the vulnerable SMBv3 configuration by disabling compression:")
-            result = lr_session.create_process("powershell.exe -ExecutionPolicy Bypass -File .\\EternalDarkness.ps1 -mitigate", wait_for_output=True, remote_output_file_name=None, working_directory="C:\\Program Files\\Confer\\temp\\", wait_timeout=30, wait_for_completion=True)
+            result = lr_session.create_process("powershell.exe -ExecutionPolicy Bypass -File .\\EternalDarkness.ps1 -mitigate", wait_for_output=True, remote_output_file_name=None, working_directory="C:\\Program Files\\Confer\\temp\\", wait_timeout=30, wait_for_completion=True).decode("utf-8")
             print ("")
             print("{}".format(result))
-            print ("")
         else:
             print ("[ * ] Checking the system for vulnerable SMBv3 configuration:")
-            result = lr_session.create_process("powershell.exe -ExecutionPolicy Bypass -File .\\EternalDarkness.ps1", wait_for_output=True, remote_output_file_name=None, working_directory="C:\\Program Files\\Confer\\temp\\", wait_timeout=30, wait_for_completion=True)
+            result = lr_session.create_process("powershell.exe -ExecutionPolicy Bypass -File .\\EternalDarkness.ps1", wait_for_output=True, remote_output_file_name=None, working_directory="C:\\Program Files\\Confer\\temp\\", wait_timeout=30, wait_for_completion=True).decode("utf-8")
             print ("")
             print("{}".format(result))
-            print ("")
 
         print ("[ * ] Removing EternalDarkness.ps1")
         lr_session.create_process("powershell.exe del .\\EternalDarkness.ps1", wait_for_output=False, remote_output_file_name=None, working_directory="C:\\Program Files\\Confer\\temp\\", wait_timeout=30, wait_for_completion=False)
