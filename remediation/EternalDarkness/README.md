@@ -31,8 +31,6 @@ If the host system is vulnerable and -mitigate is used it will set DisableCompre
 
 Usage:
 
-
-
 Checking if device is vulnerable to EnternalDarkness
 ```Powershell
 EternalDarkness.ps1
