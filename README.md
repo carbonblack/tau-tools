@@ -24,7 +24,7 @@
   - [PNG Extract](https://github.com/carbonblack/tau-tools/tree/master/threat_hunting/png_extract)
 
 #### Remediation
-  - [Eternal Darkness](https://github.com/carbonblack/tau-tools/tree/master/remediation/EternalDarkness)
+  - [EternalDarkness](https://github.com/carbonblack/tau-tools/tree/master/remediation/EternalDarkness)
   - [Shlayer](https://github.com/carbonblack/tau-tools/tree/master/remediation/shlayer)
 
 #### Threat Emulation
