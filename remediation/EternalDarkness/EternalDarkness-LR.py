@@ -62,9 +62,9 @@ def live_response(cb, host=None, response=None):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-m", "--machinename", help="machinename to run host forensics recon on")
-    parser.add_argument("-c", "--check", help="Check the system for the vulnerable SMBv3 Configuration", action = "store_true")
-    parser.add_argument("-p", "--patch", help="Mitigate the vulnerable system's SMBv3 configuration by disabling compression", action = "store_true")
+    parser.add_argument("-m", "--machinename", help = "machinename to run host forensics recon on")
+    parser.add_argument("-c", "--check", help = "Check the system for the vulnerable SMBv3 Configuration", action = "store_true")
+    parser.add_argument("-p", "--patch", help = "Mitigate the vulnerable system's SMBv3 configuration by disabling compression", action = "store_true")
     parser.add_argument('-o', '--orgprofile', help = "Select your cbapi credential profile", dest = "orgprofile", default = "default")
     args = parser.parse_args()
 
