@@ -23,6 +23,10 @@
   - [YARA](https://github.com/carbonblack/tau-tools/tree/master/threat_hunting/yara)
   - [PNG Extract](https://github.com/carbonblack/tau-tools/tree/master/threat_hunting/png_extract)
 
+#### Remediation
+  - [Eternal Darkness](https://github.com/carbonblack/tau-tools/tree/master/remediation/EternalDarkness)
+  - [Shlayer](https://github.com/carbonblack/tau-tools/tree/master/remediation/shlayer)
+
 #### Threat Emulation
   - [Pseudo Ransomware](https://github.com/carbonblack/tau-tools/tree/master/threat_emulation/pseudo_ransomware)
 
@@ -30,7 +34,4 @@
   - [FancyBear](https://github.com/carbonblack/tau-tools/tree/master/malware_specific/FancyBear)
   - [Sodinokibi](https://github.com/carbonblack/tau-tools/tree/master/malware_specific/Sodinokibi)
 
-#### Remediation
-  - [Shlayer](https://github.com/carbonblack/tau-tools/tree/master/remediation/shlayer)
-
-Last updated: January 9, 2020
+Last updated: March 13, 2020
