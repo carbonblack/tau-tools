@@ -22,6 +22,7 @@
     Author: Casey Parman
     Last Edit: 2020-03-11
     Version 1.0 - initial release
+    Copyright VMware 2020
 #>
 param
 (
