@@ -47,3 +47,38 @@ PS C:\> .\EternalDarkness.ps1
 --Not Vulnerable--
 ------------------
 ```
+
+
+## Live Response Wrapper
+
+The EternalDarkness-LR.py script is a wrapper for executing the EternalDarkness.ps1 script remotely via the VMware Carbon Black Cloud API.
+
+Usage:
+```Python
+EternalDarkness-LR.py [-h] [-m MACHINENAME] [-c] [-p] [-o ORGPROFILE]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -m MACHINENAME, --machinename MACHINENAME
+                        machinename to run host forensics recon on
+  -c, --check           Check the system for the vulnerable SMBv3
+                        Configuration
+  -p, --patch           Mitigate the vulnerable system SMBv3 configuration
+                        by disabling compression
+  -o ORGPROFILE, --orgprofile ORGPROFILE
+                        Select your cbapi credential profile
+```
+
+## Example
+
+Checking for vulnerable SMBv3 configuration:
+```Python
+$ python3 EternalDarkness-LR.py -m <hostname> -c -o <cbapi profile>
+```
+
+Mitigating vulnerable SMBv3 configuration:
+```Python
+$ python3 EternalDarkness-LR.py -m <hostname> -p -o <cbapi profile>
+```
+
+This script is compatible with the full VMware Carbon Black Cloud API and requires the python cbapi
