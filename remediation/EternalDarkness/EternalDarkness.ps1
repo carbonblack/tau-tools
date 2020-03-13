@@ -3,9 +3,8 @@
     This detects and mitigates if systems are vulnerable to CVE-2020-0796 EternalDarkness
 
 .DESCRIPTION
-    This script will check OS version and if any shares are enabled.  If OS version matches and shares are enabled 
-    it will check HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameter\DisableCompression to determine if the host system is vulnerable.
-    If the host system is vulnerable and -mitigate is used it will set DisableCompression to 1
+   This script will identify if a machine has active SMB shares, is running an OS version impacted by this vulnerability,
+   and check to see if the disabled compression mitigating keys are set and optionally set mitigating keys.
 
 .PARAMETER mitigate 
     The parameter mitigate is used to apply the recommenced mitigation's.
@@ -28,6 +27,21 @@ param
 (
     [switch]$mitigate
 )
+
+$HotFIX = get-wmiobject -class win32_quickfixengineering | FL HotFixID 
+If ($HotFIX -contains "KB4540673")
+{
+    Write-Host -ForegroundColor Green "------------------"
+    Write-Host -ForegroundColor Green "--System Patched--"
+    Write-Host -ForegroundColor Green "------------------"
+    return
+} Else
+{
+    Write-Host -ForegroundColor Red "-----------------"
+    Write-Host -ForegroundColor Red "--Patch Missing--"
+    Write-Host -ForegroundColor Red "-----------------"
+}
+
 
 If ([environment]::OSVersion.Version.Major -eq 10) 
 {
@@ -109,5 +123,3 @@ If ([environment]::OSVersion.Version.Major -eq 10)
     Write-Host -ForegroundColor Green "------------------"
 
 } 
-
-
