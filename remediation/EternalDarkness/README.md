@@ -54,7 +54,7 @@ PS C:\> .\EternalDarkness.ps1
 The EternalDarkness-LR.py script is a wrapper for executing the EternalDarkness.ps1 script remotely via the VMware Carbon Black Cloud API.
 
 Usage:
-```Python
+```PowerShell
 EternalDarkness-LR.py [-h] [-m MACHINENAME] [-c] [-p] [-o ORGPROFILE]
 
 optional arguments:
@@ -72,12 +72,12 @@ optional arguments:
 ## Example
 
 Checking for vulnerable SMBv3 configuration:
-```Python
+```PowerShell
 $ python3 EternalDarkness-LR.py -m <hostname> -c -o <cbapi profile>
 ```
 
 Mitigating vulnerable SMBv3 configuration:
-```Python
+```PowerShell
 $ python3 EternalDarkness-LR.py -m <hostname> -p -o <cbapi profile>
 ```
 
