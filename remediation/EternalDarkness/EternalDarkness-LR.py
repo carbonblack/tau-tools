@@ -19,7 +19,7 @@
 #   -o ORGPROFILE, --orgprofile ORGPROFILE
 #                         Select your cbapi credential profile
 
-import os, sys, argparse, requests, json, yaml, time, pprint
+import os, sys, time, argparse
 from cbapi.defense import *
 
 def live_response(cb, host=None, response=None):
