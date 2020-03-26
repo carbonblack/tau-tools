@@ -41,13 +41,14 @@ Microsoft considers the threat to be low for Windows 10 systems due to mitigatio
 ## Detections
 
 Reliable signatures specific to this threat are not yet available. Some
-customers have considered queries related to modload:atmfd.dll, however this is
-loaded by the ntkrnl.exe on boot the exclusions required to prevent false
-positives may also cause false negatives in this case. Other VMWare Carbon Black
-Advanced Threats and other signatures are intended to broadly cover the attack
-process, in order to stop an attack at multiple points in the attackers kill
-chain. In this case, Carbon Black recommends close monitoring of
-post-exploitation signatures for any Windows systems before Windows 10.
+customers have considered queries related to `modload:atmfd.dll`, however this
+DLL is loaded by the `ntoskrnl.exe` on boot, and the exclusions required to
+prevent false positives from these queries may also cause false negatives. Other
+VMWare Carbon Black Advanced Threats and other signatures are intended to
+broadly cover the attack process, in order to stop an attack at multiple points
+in the attackers kill chain. In this case, Carbon Black recommends close
+monitoring of post-exploitation signatures for any Windows systems before
+Windows 10.
 
 ## Mitigations
 
