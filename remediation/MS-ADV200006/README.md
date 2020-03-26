@@ -58,12 +58,12 @@ Security Advisory
 
 
 * Works on all systems but won't mitigate the issue if you open a document with the vulnerable font class
-  1. Disable the Preview Pane and Details Pane in Windows Explorer
-  2. Disable the WebClient service
+  * Disable the Preview Pane and Details Pane in Windows Explorer
+  * Disable the WebClient service
 
 * Only works on older (before Windows 10) but completely mitigates the issue
   though can introduce usability issues in rare cases
-  * Rename ATMFD.DLL
+  * Rename `ATMFD.DLL`
 
 > "Please note: ATMFD.DLL is not present in Windows 10 installalations starting
 > with Windows 10, version 1709. Newer versions do not have this DLL."
@@ -72,6 +72,17 @@ Microsoft does not recommend these mitigations on Windows 10 systems _currently 
 
 CB Recommends following Microsofts mitigations to disable ATMFT on Windows 8.1
 and below using either the rename or registry method provided by Microsoft.
+
+### Mitigation Impact
+
+From Microsoft
+
+> "Applications that rely on embedded font technology will not display
+> properly. Disabling ATMFD.DLL could cause certain applications to stop working
+> properly if they use OpenType fonts. Microsoft Windows does not release any
+> OpenType fonts natively. However, third-party applications could install them
+> and they could be affected by this change."
+
 
 ### Identification and Mitigation of affected systems
 
