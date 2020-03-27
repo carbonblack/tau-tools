@@ -31,7 +31,7 @@ param
 )
 
 $HotFIX = get-wmiobject -class win32_quickfixengineering | FL HotFixID 
-If ($HotFIX -contains "KB4540673")
+If ($HotFIX -contains "KB4540673" -or $HotFIX -contains "KB4551762")
 {
     Write-Host -ForegroundColor Green "------------------"
     Write-Host -ForegroundColor Green "--System Patched--"
