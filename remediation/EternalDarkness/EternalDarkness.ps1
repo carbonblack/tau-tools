@@ -1,6 +1,7 @@
 <#
 .SYNOPSIS
     This detects and mitigates if systems are vulnerable to CVE-2020-0796 EternalDarkness
+    https://portal.msrc.microsoft.com/en-US/security-guidance/advisory/CVE-2020-0796
 
 .DESCRIPTION
    This script will identify if a machine has active SMB shares, is running an OS version impacted by this vulnerability,
@@ -9,6 +10,7 @@
 .PARAMETER mitigate 
     The parameter mitigate is used to apply the recommenced mitigation's.
     https://portal.msrc.microsoft.com/en-US/security-guidance/advisory/ADV200005
+    https://portal.msrc.microsoft.com/en-US/security-guidance/advisory/CVE-2020-0796
 
 .EXAMPLE
     The example below mitigates the system if vulnerable to CVE-2020-0796 EternalDarkness, Requires running as Admin
@@ -30,7 +32,7 @@ param
 )
 
 $HotFIX = get-wmiobject -class win32_quickfixengineering | FL HotFixID 
-If ($HotFIX -contains "KB4540673")
+If ($HotFIX -contains "KB4540673" -or $HotFIX -contains "KB4551762")
 {
     Write-Host -ForegroundColor Green "------------------"
     Write-Host -ForegroundColor Green "--System Patched--"
