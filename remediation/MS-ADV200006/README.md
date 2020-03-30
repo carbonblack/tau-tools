@@ -89,12 +89,10 @@ From Microsoft
 VMWare Carbon Black TAU has published a PowerShell script to detect and mitigate
 this vulnerability in our public
 ‘[tau-tools](https://github.com/carbonblack/tau-tools)’ GitHub repository:
-[ADV200006](https://github.com/carbonblack/tau-tools/tree/master/remediation/MS-ADV200006). This
-script will identify if a machine has active SMB shares, is running an OS
-version impacted by this vulnerability, and check to see if the disabled
-compression mitigating keys are set and optionally set mitigating keys. It can
-be leveraged with any endpoint configuration management tools that support
-PowerShell along with LiveResponse.
+[ADV200006](https://github.com/carbonblack/tau-tools/tree/master/remediation/MS-ADV200006). 
+This script will report and identify if the DisableATMFD registry key is set and optionally 
+set mitigating keys. It can be leveraged with any endpoint configuration management tools 
+that support PowerShell along with LiveResponse.
 
 ## Description
 
@@ -113,12 +111,12 @@ and -mitigate is used it will set DisableATMFD to 1.
 
 Usage:
 
-Checking if device is vulnerable to EnternalDarkness
+Checking if device is vulnerable to ADV200006
 ```Powershell
 MS-ADV200006.ps1
 ```
 
-Mitigating systems that are vulnerable to EternalDarkness
+Mitigating systems that are vulnerable to ADV200006
 ```Powershell
 MS-ADV200006.ps1 -mitigate
 ```
