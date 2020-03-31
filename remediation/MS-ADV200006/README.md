@@ -113,12 +113,12 @@ and -mitigate is used it will set DisableATMFD to 1.
 
 Usage:
 
-Checking if device is vulnerable to MS-ADV200006
+Checking if device is vulnerable to ADV200006
 ```Powershell
 MS-ADV200006.ps1
 ```
 
-Mitigating systems that are vulnerable to MS-ADV200006
+Mitigating systems that are vulnerable to ADV200006
 ```Powershell
 MS-ADV200006.ps1 -mitigate
 ```
