@@ -5,7 +5,7 @@
 
 ## Recommendation
 
-CB Recommends following Microsofts mitigations to disable ATMFT on Windows 8.1
+CB Recommends following Microsoft's mitigations to disable ATMFT on Windows 8.1
 and below using either the rename or registry method provided by Microsoft.
 
 ## Summary
@@ -52,7 +52,7 @@ Windows 10.
 
 ## Mitigations
 
-Mirosoft provided three recommended mitigations, with specifics available at the Microsoft
+Microsoft provided three recommended mitigations, with specifics available at the Microsoft
 Security Advisory
 [ADV200006](https://portal.msrc.microsoft.com/en-US/security-guidance/advisory/ADV200006):
 
@@ -65,12 +65,12 @@ Security Advisory
   though can introduce usability issues in rare cases
   * Rename `ATMFD.DLL`
 
-> "Please note: ATMFD.DLL is not present in Windows 10 installalations starting
+> "Please note: ATMFD.DLL is not present in Windows 10 installations starting
 > with Windows 10, version 1709. Newer versions do not have this DLL."
 
 Microsoft does not recommend these mitigations on Windows 10 systems _currently supported by Microsoft_.
 
-CB Recommends following Microsofts mitigations to disable ATMFT on Windows 8.1
+CB Recommends following Microsoft's mitigations to disable ATMFT on Windows 8.1
 and below using either the rename or registry method provided by Microsoft.
 
 ### Mitigation Impact
