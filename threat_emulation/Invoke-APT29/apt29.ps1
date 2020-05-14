@@ -1747,8 +1747,8 @@ Attack Source:
         Write-Host "Sending 2 TCP requests to carbonblack.com over ports 443 and 80"
         Write-Host "    Test-NetConnection -ComputerName carbonblack.com -Port 443" -ForegroundColor Gray
         Write-Host "    Test-NetConnection -ComputerName carbonblack.com -Port 80" -ForegroundColor Gray
-        Test-Connection -ComputerName carbonblack.com -Port 443
-        Test-Connection -ComputerName carbonblack.com -Port 80
+        Test-NetConnection -ComputerName carbonblack.com -Port 443
+        Test-NetConnection -ComputerName carbonblack.com -Port 80
         Write-Host "Connection Testing complete - feel free to modify and re-test using other domains/IPs and ports"
     } elseif ( $cleanup ) {
         Write-Host "No cleanup option available for this attack."
