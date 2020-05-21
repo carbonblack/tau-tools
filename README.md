@@ -33,5 +33,6 @@
 #### Malware Specific
   - [FancyBear](https://github.com/carbonblack/tau-tools/tree/master/malware_specific/FancyBear)
   - [Sodinokibi](https://github.com/carbonblack/tau-tools/tree/master/malware_specific/Sodinokibi)
+  - [TinyPOS](https://github.com/carbonblack/tau-tools/tree/master/malware_specific/TinyPOS)
 
 Last updated: March 13, 2020
