@@ -6,12 +6,12 @@ This project is for generating a MITRE Navigator JSON file that can be used to u
 
 ## History
 
-Version 1.0 - Initial release
-Version 2.0 - Updated to include EEDR and EDR products. Also works with latest version of MITRE ATT&CK Navigator layers.
+- Version 1.0 - Initial release
+- Version 2.0 - Updated to include EEDR and EDR products. Also works with latest version of MITRE ATT&CK Navigator layers.
 
 ## Author
  
-Adam Nadrowski ([@\_sup\_mane](https://twitter.com/occupy_eip))      
+Adam Nadrowski ([@occupy\_eip](https://twitter.com/occupy_eip))      
 
 ## License
 
