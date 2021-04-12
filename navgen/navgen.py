@@ -262,7 +262,7 @@ def main():
       outfile.write(navigator_json)
       print("\n[!] Saved MITRE Navigator json file as " + filename)
       print(
-         "[!] Use this file to 'Open Existing Layer' from local file on https://mitre.github.io/attack-navigator/enterprise/")
+         "[!] Use this file to 'Open Existing Layer' from local file on https://mitre-attack.github.io/attack-navigator/")
 
 
 if __name__ == '__main__':
